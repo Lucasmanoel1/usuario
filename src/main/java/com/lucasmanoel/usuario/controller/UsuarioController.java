@@ -1,9 +1,11 @@
 package com.lucasmanoel.usuario.controller;
 
 import com.lucasmanoel.usuario.business.UsuarioService;
+import com.lucasmanoel.usuario.business.ViaCepService;
 import com.lucasmanoel.usuario.business.dto.EnderecoDTO;
 import com.lucasmanoel.usuario.business.dto.TelefoneDTO;
 import com.lucasmanoel.usuario.business.dto.UsuarioDTO;
+import com.lucasmanoel.usuario.infrastructure.clients.ViaCepDTO;
 import com.lucasmanoel.usuario.infrastructure.entity.Usuario;
 import com.lucasmanoel.usuario.infrastructure.security.JwtUtil;
 import com.lucasmanoel.usuario.infrastructure.security.SecurityConfig;
@@ -30,6 +32,8 @@ public class UsuarioController {
     private final UsuarioService usuarioService;
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
+    private final ViaCepService viaCepService;
+
 
     @PostMapping
     @Operation(summary = "Cria usuario",description = "Cria um novo usuario")
@@ -118,5 +122,16 @@ public class UsuarioController {
     public ResponseEntity<EnderecoDTO> cadastraEndereco(@RequestBody EnderecoDTO dto,
                                                          @RequestHeader("Authorization") String token){
         return ResponseEntity.ok(usuarioService.cadastroEndereco(token, dto));
+    }
+
+    @GetMapping("/endereco/{cep}")
+    @Operation(summary = "Busca Cep",description = "Consulta os dados de endereço completos a partir de um CEP de 8 dígitos.")
+    @ApiResponse(responseCode = "200", description = "Endereço encontrado")
+    @ApiResponse(responseCode = "400", description = "CEP com formato inválido")
+    @ApiResponse(responseCode = "404", description = "CEP não encontrado")
+    @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
+    @ApiResponse(responseCode = "401", description = "Usuário não autorizado")
+    public ResponseEntity<ViaCepDTO> buscarDadosCep(@PathVariable("cep") String cep){
+        return ResponseEntity.ok(viaCepService.buscaDadosEndereco(cep));
     }
 }
