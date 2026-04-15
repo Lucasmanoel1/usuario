@@ -1,6 +1,7 @@
 package com.lucasmanoel.usuario.controller;
 
 import com.lucasmanoel.usuario.infrastructure.exceptions.ConflictExeception;
+import com.lucasmanoel.usuario.infrastructure.exceptions.IllegalArgumentException;
 import com.lucasmanoel.usuario.infrastructure.exceptions.ResourceNotFoundException;
 import com.lucasmanoel.usuario.infrastructure.exceptions.UnauthorizedException;
 import org.springframework.http.HttpStatus;
