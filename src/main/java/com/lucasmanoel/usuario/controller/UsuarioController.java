@@ -130,7 +130,6 @@ public class UsuarioController {
     @ApiResponse(responseCode = "400", description = "CEP com formato inválido")
     @ApiResponse(responseCode = "404", description = "CEP não encontrado")
     @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
-    @ApiResponse(responseCode = "401", description = "Usuário não autorizado")
     public ResponseEntity<ViaCepDTO> buscarDadosCep(@PathVariable("cep") String cep){
         return ResponseEntity.ok(viaCepService.buscaDadosEndereco(cep));
     }
