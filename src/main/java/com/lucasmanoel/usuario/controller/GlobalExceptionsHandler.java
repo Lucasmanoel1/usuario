@@ -21,8 +21,8 @@ public class GlobalExceptionsHandler {
                                                                               HttpServletRequest request){
         return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(buildErro(HttpStatus.NOT_FOUND.value(),
                 exception.getMessage(),
-                request.getRequestURI(),
-                "Not Found"
+                "Not Found",
+                request.getRequestURI()
         ));
     }
 
@@ -30,8 +30,8 @@ public class GlobalExceptionsHandler {
     public ResponseEntity<ErrorResponseDTO> handlerConflictException(ConflictExeception exception, HttpServletRequest request){
         return  ResponseEntity.status(HttpStatus.CONFLICT).body(buildErro(HttpStatus.CONFLICT.value(),
                 exception.getMessage(),
-                request.getRequestURI(),
-                "CONFLICT"
+                "CONFLICT",
+                request.getRequestURI()
         ));
     }
 
@@ -39,8 +39,8 @@ public class GlobalExceptionsHandler {
     public ResponseEntity<ErrorResponseDTO> handlerUnauthorizedException(UnauthorizedException exception, HttpServletRequest request){
         return  ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(buildErro(HttpStatus.UNAUTHORIZED.value(),
                 exception.getMessage(),
-                request.getRequestURI(),
-                "UNAUTHORIZED"
+                "UNAUTHORIZED",
+                request.getRequestURI()
         ));
     }
 
@@ -48,8 +48,8 @@ public class GlobalExceptionsHandler {
     public ResponseEntity<ErrorResponseDTO> handlerIllegalargumentException(IllegalArgumentException exception, HttpServletRequest request){
         return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(buildErro(HttpStatus.BAD_REQUEST.value(),
                 exception.getMessage(),
-                request.getRequestURI(),
-                "BAD_REQUEST"
+                "BAD_REQUEST",
+                request.getRequestURI()
         ));
     }
     private ErrorResponseDTO buildErro(int status, String mensagem, String error, String path){
