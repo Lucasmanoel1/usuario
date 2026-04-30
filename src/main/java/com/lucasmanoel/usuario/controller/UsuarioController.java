@@ -6,7 +6,6 @@ import com.lucasmanoel.usuario.business.dto.EnderecoDTO;
 import com.lucasmanoel.usuario.business.dto.TelefoneDTO;
 import com.lucasmanoel.usuario.business.dto.UsuarioDTO;
 import com.lucasmanoel.usuario.infrastructure.clients.ViaCepDTO;
-import com.lucasmanoel.usuario.infrastructure.entity.Usuario;
 import com.lucasmanoel.usuario.infrastructure.security.JwtUtil;
 import com.lucasmanoel.usuario.infrastructure.security.SecurityConfig;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,12 +13,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

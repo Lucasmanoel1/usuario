@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '4.0.3'
 	id 'io.spring.dependency-management' version '1.1.7'
+	id "org.sonarqube" version "7.2.3.7755"
 }
 
 group = 'com.lucasmanoel'
@@ -55,5 +56,12 @@ tasks.named('test') {
 dependencyManagement {
 	imports {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+sonarqube {
+	properties {
+		property "sonar.projectKey", "usuario"
+		property "sonar.host.url", "http://localhost:9000"
+		property "sonar.login", "sqa_05c2fefea2e3081596fb999f1a64cf3d375ec528"
 	}
 }
