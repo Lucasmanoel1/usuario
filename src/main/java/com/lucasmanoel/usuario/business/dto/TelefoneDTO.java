@@ -1,6 +1,5 @@
 package com.lucasmanoel.usuario.business.dto;
 
-import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
