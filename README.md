@@ -1,127 +1,49 @@
-# 👤 MS-Usuario
+# usuario
+Microsserviço de gerenciamento de usuários do sistema Agendador de Tarefas. Cuida de autenticação via JWT, CRUD de usuários e gerenciamento de endereços e telefones, com consulta de CEP integrada via ViaCEP.
 
-Microserviço responsável pelo gerenciamento completo de usuários dentro da arquitetura do **Agendador de Tarefas**. Fornece autenticação via JWT, CRUD de usuários e gerenciamento de endereços e telefones, além de integração com a API do ViaCEP.
+## Stack
+- Java 17
+- Spring Boot
+- Spring Security + JWT (java-jwt)
+- Spring Data JPA
+- PostgreSQL
+- OpenFeign (integração com ViaCEP)
+- Springdoc OpenAPI (Swagger)
+- Gradle
+- SonarQube
 
----
+## API
+Rotas marcadas com 🔒 exigem o header `Authorization` com um JWT válido.
 
-## 🏗️ Arquitetura do sistema
-
-Este serviço faz parte de uma arquitetura de microserviços composta por 4 módulos:
-
-```
-Frontend
-    └── BFF (bff-agendador) :8083
-            ├── MS-Usuario      :8080  → PostgreSQL
-            ├── MS-Agendador    :8081  → MongoDB
-            └── MS-Notificacao  :8082  → SMTP (e-mail)
-```
-
-> **Importante:** Os endpoints deste serviço **não devem ser acessados diretamente**. Toda comunicação deve passar pelo BFF.
-
----
-
-## 🚀 Tecnologias
-
-| Tecnologia | Uso |
-|---|---|
-| Java 17 | Linguagem |
-| Spring Boot 4.0.3 | Framework |
-| Spring Security + JWT (JJWT 0.13) | Autenticação |
-| Spring Data JPA | Persistência |
-| PostgreSQL | Banco de dados |
-| Spring Cloud OpenFeign | Integração com ViaCEP |
-| Springdoc OpenAPI (Swagger) | Documentação |
-| Lombok | Redução de boilerplate |
-| SonarQube | Qualidade de código |
-| Docker | Containerização |
-| GitHub Actions | CI/CD |
-
----
-
-## 📋 Endpoints
-
-### Usuário
 | Método | Rota | Descrição | Auth |
-|---|---|---|---|
-| `POST` | `/usuario` | Cria novo usuário | ❌ |
-| `POST` | `/usuario/login` | Realiza login e retorna token JWT | ❌ |
-| `GET` | `/usuario?email=` | Busca usuário por e-mail | ✅ |
-| `PUT` | `/usuario` | Atualiza dados do usuário | ✅ |
-| `DELETE` | `/usuario/{email}` | Remove usuário por e-mail | ✅ |
+|--------|------|-----------|------|
+| POST | /usuario | Criar um novo usuário | - |
+| POST | /usuario/login | Autenticar e obter token JWT | - |
+| GET | /usuario?email= | Buscar usuário por e-mail | 🔒 |
+| PUT | /usuario | Atualizar dados do usuário | 🔒 |
+| DELETE | /usuario/{email} | Remover usuário por e-mail | 🔒 |
+| POST | /usuario/endereco | Cadastrar endereço | 🔒 |
+| PUT | /usuario/endereco?id= | Atualizar endereço | 🔒 |
+| POST | /usuario/telefone | Cadastrar telefone | 🔒 |
+| PUT | /usuario/telefone?id= | Atualizar telefone | 🔒 |
+| GET | /usuario/endereco/{cep} | Consultar endereço a partir de um CEP (ViaCEP) | - |
 
-### Endereço
-| Método | Rota | Descrição | Auth |
-|---|---|---|---|
-| `POST` | `/usuario/endereco` | Cadastra novo endereço | ✅ |
-| `PUT` | `/usuario/endereco?id=` | Atualiza endereço por ID | ✅ |
-| `GET` | `/usuario/endereco/{cep}` | Consulta endereço via ViaCEP | ❌ |
+## Regras de negocio
+- Um usuário pode ter múltiplos endereços e telefones associados.
+- A consulta de CEP é delegada à API pública do ViaCEP via Feign Client.
+- Toda operação de escrita sobre usuário, endereço ou telefone exige token JWT válido.
 
-### Telefone
-| Método | Rota | Descrição | Auth |
-|---|---|---|---|
-| `POST` | `/usuario/telefone` | Cadastra novo telefone | ✅ |
-| `PUT` | `/usuario/telefone?id=` | Atualiza telefone por ID | ✅ |
-
-> ✅ = Requer header `Authorization: Bearer {token}`
-
----
-
-## ⚙️ Como executar
-
-### Pré-requisitos
-- Docker e Docker Compose instalados
-
-### Com Docker Compose
-
+## Executando localmente
+Requer PostgreSQL em `localhost:5432`.
 ```bash
-docker-compose up --build
+./gradlew bootRun
 ```
+Serviço sobe na porta **8080**.
 
-O serviço subirá em `http://localhost:8080`
+## Documentação
+Com o serviço no ar, o Swagger fica disponível em `/swagger-ui.html`.
 
-### Variáveis de ambiente
+## Executando com Docker
+Este serviço faz parte de um ambiente multi-container. Consulte o repositório principal da organização [agendador-tarefas](https://github.com/Lucasmanoel1) para o `docker-compose.yml` completo.
 
-| Variável | Descrição | Padrão |
-|---|---|---|
-| `SPRING_DATASOURCE_URL` | URL do PostgreSQL | `jdbc:postgresql://localhost:5432/db_usuario` |
-| `SPRING_DATASOURCE_USERNAME` | Usuário do banco | `postgres` |
-| `SPRING_DATASOURCE_PASSWORD` | Senha do banco | `1234` |
-
----
-
-## 📖 Documentação (Swagger)
-
-Após subir o serviço, acesse:
-
-```
-http://localhost:8080/swagger-ui.html
-```
-
----
-
-## 🗂️ Estrutura do projeto
-
-```
-src/main/java/com/lucasmanoel/usuario/
-├── business/
-│   ├── UsuarioService.java        # Regras de negócio
-│   ├── ViaCepService.java         # Integração com ViaCEP
-│   ├── converter/                 # Conversão entidade ↔ DTO
-│   └── dto/                       # Data Transfer Objects
-├── controller/
-│   └── UsuarioController.java     # Endpoints REST
-├── infrastructure/
-│   ├── clients/                   # Feign Client (ViaCEP)
-│   ├── entity/                    # Entidades JPA
-│   ├── exceptions/                # Exceções customizadas
-│   ├── repository/                # Repositórios JPA
-│   └── security/                  # JWT + Spring Security
-```
-
----
-
-## 🔗 Repositórios relacionados
-
-- [bff-agendador](https://github.com/Lucasmanoel1/bff-agendador-tarefas) — Gateway de entrada
-- [agendador-tarefas](https://github.com/Lucasmanoel1/agendador-tarefas) — Gerenciamento de tarefas
-- [notificacao](https://github.com/Lucasmanoel1/notificacao) — Envio de e-mails
+> Este serviço não deve ser acessado diretamente pelo frontend — toda comunicação passa pelo [bff-agendador](https://github.com/Lucasmanoel1/bff-agendador-tarefas).
