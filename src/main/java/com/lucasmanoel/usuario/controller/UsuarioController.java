@@ -3,10 +3,11 @@ package com.lucasmanoel.usuario.controller;
 import com.lucasmanoel.usuario.business.UsuarioService;
 import com.lucasmanoel.usuario.business.ViaCepService;
 import com.lucasmanoel.usuario.business.dto.EnderecoDTO;
+import com.lucasmanoel.usuario.business.dto.LoginRequest;
 import com.lucasmanoel.usuario.business.dto.TelefoneDTO;
 import com.lucasmanoel.usuario.business.dto.UsuarioDTO;
 import com.lucasmanoel.usuario.infrastructure.clients.ViaCepDTO;
-import com.lucasmanoel.usuario.infrastructure.security.JwtUtil;
+import com.lucasmanoel.usuario.infrastructure.security.TokenConfig;
 import com.lucasmanoel.usuario.infrastructure.security.SecurityConfig;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -26,7 +27,7 @@ public class UsuarioController {
 
     private final UsuarioService usuarioService;
     private final AuthenticationManager authenticationManager;
-    private final JwtUtil jwtUtil;
+    private final TokenConfig tokenConfig;
     private final ViaCepService viaCepService;
 
 
@@ -44,8 +45,8 @@ public class UsuarioController {
     @ApiResponse(responseCode = "403", description = "Dados inválidos")
     @ApiResponse(responseCode = "500", description = "Erro interno no servidor")
     @ApiResponse(responseCode = "401", description = "Usuário não autorizado")
-    public ResponseEntity<String> login(@RequestBody UsuarioDTO usuarioDTO){
-        return ResponseEntity.ok(usuarioService.autenticarUsuario(usuarioDTO));
+    public ResponseEntity<String> login(@RequestBody LoginRequest request){
+        return ResponseEntity.ok(usuarioService.login(request));
     }
     @GetMapping
     @Operation(summary = "Busca pelo email",description = "Busca usuario pelo email no servidor")
