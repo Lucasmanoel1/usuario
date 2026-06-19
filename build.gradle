@@ -1,8 +1,8 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '4.0.3'
-	id 'io.spring.dependency-management' version '1.1.7'
-	id "org.sonarqube" version "7.2.3.7755"
+    id 'java'
+    id 'org.springframework.boot' version '4.0.3'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id "org.sonarqube" version "7.2.3.7755"
 }
 
 group = 'com.lucasmanoel'
@@ -10,58 +10,55 @@ version = '0.0.1-SNAPSHOT'
 description = 'Demo project for Spring Boot'
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
-	}
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 ext {
-	set('springCloudVersion', "2025.1.0")
+    set('springCloudVersion', "2025.1.0")
 }
 
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
-	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'org.postgresql:postgresql'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
-	testImplementation 'org.springframework.boot:spring-boot-starter-security-test'
-	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'org.postgresql:postgresql'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-security-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-	//JWT
-	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.13.0")
-	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.13.0")
-	implementation("io.jsonwebtoken:jjwt-api:0.13.0")
+    implementation 'com.auth0:java-jwt:4.5.2'
 
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2")
-	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.2")
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-	}
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }
 sonarqube {
-	properties {
-		property "sonar.projectKey", "usuario"
-		property "sonar.host.url", "http://localhost:9000"
-		property "sonar.login", "sqa_05c2fefea2e3081596fb999f1a64cf3d375ec528"
-	}
+    properties {
+        property "sonar.projectKey", "usuario"
+        property "sonar.host.url", "http://localhost:9000"
+        property "sonar.login", "sqa_05c2fefea2e3081596fb999f1a64cf3d375ec528"
+    }
 }
